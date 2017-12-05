@@ -7,6 +7,8 @@ var morgan = require('morgan');                                                 
 var bodyParser = require('body-parser');                                            // pull information from HTML POST (express4)
 var methodOverride = require('method-override');                                    // simulate DELETE and PUT(express4)
 var fs = require('fs');                                                             // file reader? idk.
+const NodeCache = require( "node-cache" );
+const myCache = new NodeCache();
 
 
 // configuration ================
@@ -23,6 +25,19 @@ app.use(methodOverride());
 app.listen(8080);
 console.log("App listening on port 8080");
 
+// build cache of zip codes
+var zipContents = fs.readFileSync('zips.json');
+var zipJson = JSON.parse(zipContents);
+for (var zip in zipJson) {
+	var coords = {lat: zip.latitude, lng: zip.longitude};
+	
+	myCache.set(zip.zipCode, coords, function( err, success) {
+		if (!err && success) {
+			console.log( success);
+		}
+	});
+}
+
 // routes ==============
     // api ------------------------------------------
     // get orders
@@ -32,6 +47,19 @@ console.log("App listening on port 8080");
 
         res.json(json.orders);
     });
+	
+	// get zip coordinates
+	app.get('api/zip/:zip_id', function(req, res) {
+		myCache.get( req.params.zip_id, function (err, value) {
+			if ( !err) {
+				if (value == undefined) {
+				} else {
+					res.json(value);
+				}
+			}
+		});
+	});
+	
 
     // application ------------------
     app.get('*', function(req, res) {
