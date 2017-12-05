@@ -1,0 +1,66 @@
+<!-- index.html -->
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="orderMap">
+    <head>
+        <!-- META -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+        <title>Node/Angular Order Heat Map</title>
+
+        <!-- SCROLLS -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+        <style>
+            html            { overflow-y:scroll;}
+            body            { padding-top:50px; }
+            #order-list     { margin-bottom:30px; }
+        </style>
+
+        <!-- GOOGLE MAP STUFF -->
+        <style>
+            /* Always set the map height explicitly to define the size of the div
+            * element that contains the map. */
+            #map {
+                height: 100%;
+            }
+
+            #floating-panel {
+               /* position: absolute;*/
+                top: 10px;
+                left: 25%;
+                z-index: 5;
+                background-color: #fff;
+                padding: 5px;
+                border: 1px solid #999;
+                text-align: center;
+                font-family: 'Roboto','sans-serif';
+                line-height: 30px;
+                padding-left: 10px;
+            }
+        </style>
+
+        <!-- SPELLS -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+        <script src="core.js"></script>
+        <script src="maps.js"></script>
+
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization&callback=initMap">
+        </script>
+        
+    </head>
+
+    <!-- SET THE CONTROLLER AND GET ALL ORDERS -->
+    <body ng-controller="mainController">
+        <div class="container">
+            <!-- HEADER AND ORDER COUNT -->
+            <div class="jumbotron text-center">
+                <h1>Number of orders mapping: <span class="label label-info"> {{ orders.length }}</span></h1>
+            </div>
+            <div id="map" style="clear:both; height:600px"></div>
+        </div>
+    </body>
+</html>
